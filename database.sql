@@ -112,7 +112,7 @@ create table quartos (
 	idQuarto int primary key auto_increment,
     andar varchar(10) not null,
     tipoQuarto varchar(50) not null,
-    ocupacacaoMax int not null,
+    ocupacaoMax int not null,
 	situacao char(3) not null,
     nome varchar(50) not null,
     descricao text,
@@ -124,10 +124,61 @@ create table quartos (
 
 describe quartos;
 
+delete from quartos where idQuarto = 2;
+
+alter table quartos change ocupacacaoMax ocupacaoMax int not null;
+
 alter table quartos add column numeroQuarto varchar(10) not null after andar;
 
+alter table quartos add column cafeDaManha char(3) not null after preco;
+alter table quartos add column foto varchar(255) not null after descricao; 
+
+insert into quartos (andar, numeroQuarto, tipoQuarto, ocupacaoMax, situacao, nome, descricao, preco, tipoCama, varanda) values ("5°", "505", "Superior Premier", "3", "não", 
+"Familiar", "O quarto de 32m² com piso frio, varanda - vista para o mar. Oferece ar condicionado individual, TV LCD 42'', wi-fi gratis, cofre digital, 
+frigobar abastecido e banheiro com secador de cabelo e amenities e mesa de trabalho.", 750.90, "Queen Size", "sim");
+
+insert into quartos (andar, numeroQuarto, tipoQuarto, ocupacaoMax, situacao, nome, descricao, preco, cafeDaManha, tipoCama, varanda) values ("10°", "14", "Suite Presidencial", "2", "não", 
+"Familiar", "O quarto de 40m² com piso frio, varanda - vista para o mar. Oferece ar condicionado individual, TV LCD 50'', wi-fi gratis, cofre digital, 
+frigobar abastecido e banheiro com secador de cabelo e amenities e mesa de trabalho.", 5000, "sim", "Queen Size", "sim");
+
+insert into quartos (andar, numeroQuarto, tipoQuarto, ocupacaoMax, situacao, nome, descricao, foto, preco, cafeDaManha, tipoCama, varanda) values ("5°", "33", "Room Standard", "2", "não", 
+"Casal", "O quarto de 30m² com piso frio, varanda. Oferece ar condicionado individual, TV LCD 40'', wi-fi gratis,
+frigobar abastecido e banheiro com secador de cabelo e amenities e mesa de trabalho.", "https://www.revistasim.com.br/wp-content/uploads/2021/03/revistaSIM_Arquitetura_Quarto-de-hotel-em-casa_Destaque_Credito_Eduardo-Pozella-1155x500.jpg",  409, "nao", "Queen Size", "sim");
+
+update quartos set cafeDaManha = "sim" where idQuarto = 1;
+update quartos set foto = "https://www.revistasim.com.br/wp-content/uploads/2021/03/revistaSIM_Arquitetura_Quarto-de-hotel-em-casa_Destaque_Credito_Eduardo-Pozella-1155x500.jpg" where idQuarto = 1;
+update quartos set foto = "https://www.hplus.com.br/wp-content/uploads/2019/08/quarto-cama-casal-hotel-vision-hplus-em-brasilia-13.jpg" where idQuarto = 3;
 
 
+select * from quartos;
+
+select * from quartos where situacao = 'não';
+
+select * from quartos  where cafeDaManha = "sim" and situacao = "nao";
+
+select * from quartos where varanda = "sim" and cafeDaManha = "sim" and situacao = "nao";
+
+select * from quartos order by preco desc;
+
+select * from quartos where preco < 700.00 and situacao = "nao";
+
+create table clientes (
+    idCliente int primary key auto_increment,
+    nomeCompleto varchar(100) not null,
+    cpf char(14) not null unique,
+    rg char(12) not null unique,
+    email varchar(50) unique,
+    celular varchar(20) not null,
+    numeroCartao varchar(20) not null unique,
+    nomeTitular varchar(100) not null,
+    validade date not null,
+    cvv char(3) not null,
+    checkin datetime not null,
+    checkout datetime not null,
+    idQuarto int not null,
+    foreign key (idQuarto) references quartos (idQuarto)
+
+);
 
 
 
