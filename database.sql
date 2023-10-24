@@ -180,6 +180,29 @@ create table clientes (
 
 );
 
+describe clientes;
+
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values
+("José de Assis", "829.942.570-09", "48.353.888-7", "josedeassis@gmail.com", "(96) 99338-2803", "5526 4863 8286 2543", "Jose de Assis", "2025-03-24", "452", "2023-11-02 14:00:00", "2023-11-05 12:00:00", 1);
+
+
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values
+("Nathan Hitler", "452.230.750-78", "84.560.325-5", "nathanhitler@gmail.com", "(49) 99525-9820", "6205 9620 3281 8524", "Nathan Hitler", "2025-04-20", "352", "2023-12-05 14:00:00", "2023-12-08 12:00:00", 3);
+
+select * from clientes;
+
+/* Busacr o nome completo e o celular do cliente que alugou o quarto de número 14, pois a tabela quartos está vinculada á tabela clientes pelo campo idQuarto */ 
+select clientes.nomeCompleto,
+clientes.celular
+from quartos inner join clientes
+on quartos.idQuarto = clientes.idQuarto where numeroQuarto = 14;
+
+/* Buscar TODAS AS INFORMAÇÕES da tabela quartos que está vinculada á tabela clientes pelo campo idQuarto */
+select * from quartos inner join clientes
+on quartos.idQuarto = clientes.idQuarto;
+
+/* Buscar o nome completo e data/horário do checkout do cliente que alugou o quarto  de número 14 */
+select clientes.nomeCompleto,date_format (clientes.checkout,'%d/%m/%Y - %H:%i') as Checkout  from quartos inner join clientes on quartos.idQuarto = clientes.idQuarto where numeroQuarto = 14; 
 
 
 
