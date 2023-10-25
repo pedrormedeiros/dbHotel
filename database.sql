@@ -162,6 +162,37 @@ select * from quartos order by preco desc;
 
 select * from quartos where preco < 700.00 and situacao = "nao";
 
+
+/*dataPedido timestap default current_timestap significa que a data do pedido será a mesma do sistema, ou seja, a data atual
+statusPedido significa que a situação do pedido será uma das seguintes opções: Pendente, Finalizado, Cancelado */
+
+create table pedido (
+    idpedido int primary key auto_increment,
+    dataPedido timestamp default current_timestamp,
+    statusPedido enum("Pendente", "Finalizado", "Cancelado") not null,
+    idCliente int not null,
+    foreign key (idCliente) references clientes (idCliente) 
+);
+
+insert into pedido (statusPedido, idCliente) values ("Pendente", 1);
+insert into pedido (statusPedido, idCliente) values ("Finalizado", 2);
+
+select * from pedido;
+
+describe pedido;
+
+create table reservas (
+	idReserva int primary key auto_increment, 
+    idPedido int not null,
+    idQuarto int not null,
+    foreign key (idPedido) references pedido (idPedido),
+    foreign key (idQuarto) references quartos (idQuarto)
+    
+);
+
+describe reservas;
+    
+
 create table clientes (
     idCliente int primary key auto_increment,
     nomeCompleto varchar(100) not null,
@@ -174,20 +205,20 @@ create table clientes (
     validade date not null,
     cvv char(3) not null,
     checkin datetime not null,
-    checkout datetime not null,
-    idQuarto int not null,
-    foreign key (idQuarto) references quartos (idQuarto)
+    checkout datetime not null
 
 );
 
 describe clientes;
 
-insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values
-("José de Assis", "829.942.570-09", "48.353.888-7", "josedeassis@gmail.com", "(96) 99338-2803", "5526 4863 8286 2543", "Jose de Assis", "2025-03-24", "452", "2023-11-02 14:00:00", "2023-11-05 12:00:00", 1);
+drop table clientes;
+
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout) values
+("José de Assis", "829.942.570-09", "48.353.888-7", "josedeassis@gmail.com", "(96) 99338-2803", "5526 4863 8286 2543", "Jose de Assis", "2025-03-24", "452", "2023-11-02 14:00:00", "2023-11-05 12:00:00");
 
 
-insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values
-("Nathan Hitler", "452.230.750-78", "84.560.325-5", "nathanhitler@gmail.com", "(49) 99525-9820", "6205 9620 3281 8524", "Nathan Hitler", "2025-04-20", "352", "2023-12-05 14:00:00", "2023-12-08 12:00:00", 3);
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout) values
+("Nathan Hitler", "452.230.750-78", "84.560.325-5", "nathanhitler@gmail.com", "(49) 99525-9820", "6205 9620 3281 8524", "Nathan Hitler", "2025-04-20", "352", "2023-12-05 14:00:00", "2023-12-08 12:00:00");
 
 select * from clientes;
 
